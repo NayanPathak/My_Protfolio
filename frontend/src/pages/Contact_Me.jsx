@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
+
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+
 export default function ContactForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,7 +25,7 @@ export default function ContactForm() {
     setError("");
      
     try {
-      const res = await fetch("http://localhost:5000/api/send-email", {
+      const res = await fetch(`${API_URL}/api/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName, email, message }),

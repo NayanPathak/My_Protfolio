@@ -78,7 +78,7 @@ const AboutMe = () => {
             avatarUrl="../my-pic.jpg"
             showUserInfo={true}
             enableTilt={true}
-            enableMobileTilt={false}
+            enableMobileTilt={true}
             onContactClick={() =>
               window.open(
                 "https://linktr.ee/nayanpathak",

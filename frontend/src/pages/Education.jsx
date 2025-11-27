@@ -11,7 +11,7 @@ const Education = () => {
     {
       institution: "St. Mary’s Inter College (CBSE Board)",
       degree: "Senior Secondary (12th)",
-      details: "Percentage: 74.8%",
+      details: "Percentage: 81%",
       duration: "2018 – 2019",
     },
     {
