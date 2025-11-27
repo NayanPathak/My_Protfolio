@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import TextPressure from "../components/TextPressure";
 import ProfileCard from "../components/ProfileCard";
 
+
 const AboutMe = () => {
   return (
     <section
@@ -28,7 +29,7 @@ const AboutMe = () => {
               italic={true}
               textColor="#ffffff"
               strokeColor="#00bfff"
-              minFontSize= {48}
+              minFontSize={48}
             />
           </div>
 
@@ -51,7 +52,16 @@ const AboutMe = () => {
             <button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md font-medium transition duration-300 shadow-lg shadow-blue-500/20">
               Know More
             </button>
-            <button className="border border-blue-500 text-blue-400 hover:bg-blue-500/10 px-8 py-3 rounded-md font-medium transition duration-300">
+            <button
+              onClick={() =>
+                window.open(
+                  "https://drive.google.com/file/d/10UDl2_nzUE1RCS0zsypRsaNiN-rkKeIX/view?usp=drive_link",
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              }
+              className="border border-blue-500 text-blue-400 hover:bg-blue-500/10 px-8 py-3 rounded-md font-medium transition duration-300"
+            >
               Get Resume
             </button>
           </div>
@@ -65,7 +75,7 @@ const AboutMe = () => {
             handle="ipathaknayan"
             status="Online"
             contactText="Contact Me"
-            avatarUrl="./src/assets/my-pic.jpg"
+            avatarUrl="../my-pic.jpg"
             showUserInfo={true}
             enableTilt={true}
             enableMobileTilt={false}
