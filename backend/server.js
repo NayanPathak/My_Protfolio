@@ -9,9 +9,31 @@ dotenv.config();
 
 const app = express();
 
-// CORS setup
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:5173";
-app.use(cors({ origin: FRONTEND_ORIGIN }));
+
+const allowedOrigins = [
+  process.env.ALLOWED_ORIGIN_LOCAL || "http://localhost:5173",
+  process.env.ALLOWED_ORIGIN_LOCAL_2 || "http://localhost:5174",
+  process.env.ALLOWED_ORIGIN_PROD || "https://nayanpathak.vercel.app",
+];
+
+console.log("Loaded CORS Allowed Origins:", allowedOrigins);
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow server-to-server requests (Postman, Render health checks)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.log("🔥 BLOCKED ORIGIN:", origin);
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(helmet());
