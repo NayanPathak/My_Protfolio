@@ -1,9 +1,10 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import TextPressure from "../components/TextPressure";
 import ProfileCard from "../components/ProfileCard";
 
-
 const AboutMe = () => {
+  const [showMore, setShowMore] = useState(false);
   return (
     <section
       id="about"
@@ -41,21 +42,38 @@ const AboutMe = () => {
               creating impactful products — from smart IoT systems to modern web
               platforms.
             </p>
-            <p className="text-gray-400">
-              I enjoy turning complex problems into simple, elegant solutions —
-              and constantly learning new technologies that push creativity to
-              the next level.
-            </p>
+
+            <AnimatePresence>
+              {showMore && (
+                <motion.p
+                  key="more"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-gray-400"
+                >
+                  I enjoy turning complex problems into simple, elegant solutions
+                  — and constantly learning new technologies that push
+                  creativity to the next level.
+                </motion.p>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="flex flex-wrap gap-4 pt-4">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md font-medium transition duration-300 shadow-lg shadow-blue-500/20">
-              Know More
+            <button
+              type="button"
+              onClick={() => setShowMore((v) => !v)}
+              aria-expanded={showMore}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md font-medium transition duration-300 shadow-lg shadow-blue-500/20"
+            >
+              {showMore ? "Show less" : "Know More"}
             </button>
             <button
               onClick={() =>
                 window.open(
-                  "https://drive.google.com/file/d/10UDl2_nzUE1RCS0zsypRsaNiN-rkKeIX/view?usp=drive_link",
+                  "https://drive.google.com/file/d/10UDl2_nzUE1RCS0zsypRsaNiN-rkKeIX/view?usp=sharing",
                   "_blank",
                   "noopener,noreferrer"
                 )

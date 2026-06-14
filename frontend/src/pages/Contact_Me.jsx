@@ -45,14 +45,8 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="w-full min-h-screen flex items-center justify-center px-4 py-20 bg-[#0a0a0a]">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-xl"
-      >
+    <section className="w-full bg-[#0a0a0a] text-white py-24 md:py-28 px-4 flex justify-center">
+      <div className="w-full max-w-xl">
         <form
           onSubmit={handleSubmit}
           className="
@@ -158,7 +152,7 @@ export default function ContactForm() {
             </motion.p>
           )}
         </form>
-      </motion.div>
+      </div>
     </section>
   );
 }

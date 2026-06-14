@@ -1,27 +1,68 @@
-import { useRef } from "react";
-import SplashCursor from "./components/SplashCursor";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import Navbar from "./components/Navbar";
+import FadeInSection from "./components/FadeInSection";
 import AboutMe from "./pages/Aboutme";
 import Projects from "./pages/Projects";
 import Skills from "./pages/Skills";
 import Education from "./pages/Education";
-import { motion, AnimatePresence } from "framer-motion";
 import Freelance_Project from "./pages/Freelance_Project";
 import ContactForm from "./pages/Contact_Me";
 
+const SplashCursor = lazy(() => import("./components/SplashCursor"));
+
+const NAV_SCROLL_OFFSET = 80;
+
+function scrollToSectionEl(ref) {
+  const el = ref.current;
+  if (!el) return;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  const top =
+    el.getBoundingClientRect().top +
+    window.scrollY -
+    NAV_SCROLL_OFFSET;
+  window.scrollTo({
+    top: Math.max(0, top),
+    behavior: prefersReducedMotion ? "auto" : "smooth",
+  });
+}
+
 export default function App() {
   const aboutRef = useRef(null);
+  const freelanceRef = useRef(null);
   const projectRef = useRef(null);
   const skillsRef = useRef(null);
   const educationRef = useRef(null);
+  const [showSplashCursor, setShowSplashCursor] = useState(false);
 
-  const scrollToSection = (ref) => {
-    ref.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollToSection = (ref) => scrollToSectionEl(ref);
+
+  useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    setShowSplashCursor(!reducedMotion && !coarsePointer);
+  }, []);
 
   return (
     <>
-      <SplashCursor />
+      {showSplashCursor && (
+        <Suspense fallback={null}>
+          <SplashCursor
+            SIM_RESOLUTION={64}
+            DYE_RESOLUTION={512}
+            PRESSURE_ITERATIONS={12}
+            SHADING={false}
+          />
+        </Suspense>
+      )}
       <div className="w-screen fixed inset-0 -z-10 bg-[#0a0a0a]"></div>
 
       <div className="relative z-10 text-white">
@@ -32,61 +73,33 @@ export default function App() {
           onEducationClick={() => scrollToSection(educationRef)}
         />
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="about"
-            ref={aboutRef}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="min-h-screen flex items-center justify-center"
-          >
-            <AboutMe />
-          </motion.div>
-          <motion.div
-            key="certificates"
-            ref={aboutRef}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="min-h-screen flex items-center justify-center"
-          >
-            <Freelance_Project />
-          </motion.div>
-          <motion.div
-            key="projects"
-            ref={projectRef}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="min-h-screen flex items-center justify-center"
-          >
-            <Projects />
-          </motion.div>
+        <FadeInSection
+          ref={aboutRef}
+          isHero
+          className="min-h-screen flex items-center justify-center"
+        >
+          <AboutMe />
+        </FadeInSection>
 
-          <motion.div
-            key="skills"
-            ref={skillsRef}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="min-h-screen flex items-center justify-center"
-          >
-            <Skills />
-          </motion.div>
+        <FadeInSection ref={freelanceRef}>
+          <Freelance_Project />
+        </FadeInSection>
 
-          <motion.div
-            key="education"
-            ref={educationRef}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="min-h-screen flex items-center justify-center"
-          >
-            <Education />
-          </motion.div>
+        <FadeInSection ref={projectRef}>
+          <Projects />
+        </FadeInSection>
+
+        <FadeInSection ref={skillsRef}>
+          <Skills />
+        </FadeInSection>
+
+        <FadeInSection ref={educationRef}>
+          <Education />
+        </FadeInSection>
+
+        <FadeInSection>
           <ContactForm />
-        </AnimatePresence>
+        </FadeInSection>
       </div>
     </>
   );

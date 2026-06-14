@@ -23,7 +23,7 @@ const Education = () => {
   ];
 
   return (
-    <section className="min-h-screen bg-[#0a0a0a] text-white py-20 px-6">
+    <section className="w-full bg-[#0a0a0a] text-white py-24 md:py-28 px-6">
       <motion.h1
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
